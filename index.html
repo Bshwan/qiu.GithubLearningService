@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GitHub Explained</title>
+  <meta name="description" content="An interactive beginner's guide to GitHub: what it is, how Git works, pull requests, key features and how to get started.">
+  <meta name="theme-color" content="#0d1117">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Mona+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+
+  <!-- ===== NAV ===== -->
+  <header class="nav" id="nav">
+    <a class="brand" href="#top" aria-label="GitHub Explained, back to top"><i data-oct="mark-github"></i><span>GitHub <em>Explained</em></span></a>
+    <nav aria-label="Sections">
+      <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navLinks" aria-label="Open menu"><i data-oct="three-bars"></i></button>
+      <ul id="navLinks">
+        <li><a href="#basics">Basics</a></li>
+        <li><a href="#terms">Key terms</a></li>
+        <li><a href="#playground">Playground</a></li>
+        <li><a href="#flow">Pull requests</a></li>
+        <li><a href="#features">Features</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- ===== HERO ===== -->
+    <section class="hero" id="top">
+      <div class="hero-text">
+        <p class="eyebrow reveal"><span class="dot"></span> An interactive guide for beginners</p>
+        <h1 class="reveal">GitHub,<br><span class="grad">explained.</span></h1>
+        <p class="lead reveal">The place where people <span class="rotator" id="rotator" aria-live="polite">store</span> code together. Learn what it is, how it works, and try it yourself, right here in your browser.</p>
+        <div class="hero-cta reveal">
+          <a href="#basics" class="btn btn-primary">Start exploring <i data-oct="arrow-down"></i></a>
+          <a href="#playground" class="btn btn-ghost"><i data-oct="git-branch"></i> Try the playground</a>
+        </div>
+        <dl class="stats reveal">
+          <div><dt><span class="count" data-to="180" data-suffix="M+">0</span></dt><dd>developers</dd></div>
+          <div><dt><span class="count" data-to="630" data-suffix="M">0</span></dt><dd>repositories</dd></div>
+          <div><dt><span class="count" data-to="1" data-suffix=" / sec">0</span></dt><dd>new developer joins</dd></div>
+        </dl>
+        <p class="src">Figures: GitHub Octoverse 2025.</p>
+      </div>
+      <div class="hero-art reveal" aria-hidden="true">
+        <div class="octo-grid" id="octoGrid"></div>
+        <div class="float-chip c1"><i data-oct="git-commit"></i> commit</div>
+        <div class="float-chip c2"><i data-oct="git-pull-request"></i> pull request</div>
+        <div class="float-chip c3"><i data-oct="git-merge"></i> merged</div>
+      </div>
+    </section>
+
+    <!-- ===== BASICS ===== -->
+    <section class="section" id="basics">
+      <div class="section-head reveal">
+        <span class="kicker">01 · The basics</span>
+        <h2>What is GitHub?</h2>
+        <p>GitHub is a <b>cloud-based platform</b> that uses <b>Git</b> to store code, track every change and help people work on the same project together.</p>
+      </div>
+
+      <div class="pillars">
+        <article class="pillar reveal" style="--c:var(--blue)"><div class="p-ic"><i data-oct="cloud"></i></div><h3>Store</h3><p>Your project lives safely online, so it is never lost if your laptop breaks.</p></article>
+        <article class="pillar reveal" style="--c:var(--purple)"><div class="p-ic"><i data-oct="history"></i></div><h3>Track</h3><p>Every change is saved with a note, so you can see what changed and go back.</p></article>
+        <article class="pillar reveal" style="--c:var(--green)"><div class="p-ic"><i data-oct="people"></i></div><h3>Share</h3><p>Teams work on the same files at once without overwriting each other.</p></article>
+      </div>
+
+      <div class="gitvs reveal">
+        <div class="gitvs-text">
+          <h3>Git vs GitHub</h3>
+          <p><b class="t-orange">Git</b> is a free <b>tool on your computer</b> that records every version of your files.</p>
+          <p><b class="t-green">GitHub</b> is a <b>website</b> that stores those Git projects online and adds teamwork tools on top.</p>
+          <p class="muted">They talk to each other with three everyday commands. Pick one to see what happens:</p>
+          <div class="seg" role="group" aria-label="Choose a Git command">
+            <button class="seg-btn is-on" data-mode="push" aria-pressed="true"><i data-oct="upload"></i> push</button>
+            <button class="seg-btn" data-mode="pull" aria-pressed="false"><i data-oct="download"></i> pull</button>
+            <button class="seg-btn" data-mode="clone" aria-pressed="false"><i data-oct="copy"></i> clone</button>
+          </div>
+          <p class="seg-caption" id="syncCaption" aria-live="polite"><code>git push</code> uploads the commits you saved on your computer to GitHub.</p>
+        </div>
+        <figure class="sync-scene" aria-label="Animated diagram of your computer exchanging commits with GitHub">
+          <svg viewBox="0 0 520 260" id="syncSvg" role="img">
+            <defs>
+              <linearGradient id="gLine" x1="0" x2="1"><stop offset="0" stop-color="#f0883e"/><stop offset="1" stop-color="#3fb950"/></linearGradient>
+            </defs>
+            <!-- laptop -->
+            <g class="laptop">
+              <rect x="28" y="70" width="150" height="100" rx="10" fill="#161b22" stroke="#30363d" stroke-width="2"/>
+              <rect x="40" y="82" width="126" height="76" rx="4" fill="#0d1117"/>
+              <path d="M14 178 h178 l-12 14 H26 z" fill="#21262d" stroke="#30363d" stroke-width="2"/>
+              <g class="code-lines" stroke-linecap="round" stroke-width="4">
+                <line x1="52" y1="96" x2="110" y2="96" stroke="#ff7b72"/>
+                <line x1="52" y1="110" x2="140" y2="110" stroke="#79c0ff"/>
+                <line x1="62" y1="124" x2="124" y2="124" stroke="#d2a8ff"/>
+                <line x1="62" y1="138" x2="100" y2="138" stroke="#a5d6ff"/>
+              </g>
+              <text x="103" y="222" text-anchor="middle" class="svg-label">Your computer</text>
+              <text x="103" y="240" text-anchor="middle" class="svg-sub">Git</text>
+            </g>
+            <!-- cloud -->
+            <g class="cloud">
+              <path d="M372 166 h104 a34 34 0 0 0 -6 -67 a46 46 0 0 0 -88 -10 a32 32 0 0 0 -10 77 z" fill="#161b22" stroke="#30363d" stroke-width="2"/>
+              <path class="cloud-mark" transform="translate(408 104) scale(2.6)" fill="#f0f6fc" d=""/>
+              <text x="426" y="222" text-anchor="middle" class="svg-label">GitHub</text>
+              <text x="426" y="240" text-anchor="middle" class="svg-sub">github.com</text>
+            </g>
+            <!-- path -->
+            <path id="syncPath" d="M190 120 C 260 60, 320 60, 372 120" fill="none" stroke="url(#gLine)" stroke-width="3" stroke-dasharray="8 8" class="dash-flow"/>
+            <g id="packets"></g>
+          </svg>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===== TERMS ===== -->
+    <section class="section" id="terms">
+      <div class="section-head reveal">
+        <span class="kicker">02 · Vocabulary</span>
+        <h2>Key terms</h2>
+        <p>Six words cover most of GitHub. Tap a card to flip it and see an everyday example.</p>
+      </div>
+      <div class="cards" id="termCards"></div>
+    </section>
+
+    <!-- ===== PLAYGROUND ===== -->
+    <section class="section" id="playground">
+      <div class="section-head reveal">
+        <span class="kicker">03 · Try it</span>
+        <h2>The branch playground</h2>
+        <p>Build a real-looking Git history. Every button shows the command a developer would type.</p>
+      </div>
+      <div class="play reveal">
+        <div class="play-main">
+          <div class="play-toolbar" role="toolbar" aria-label="Git actions">
+            <button class="btn btn-sm btn-primary" id="pgCommit"><i data-oct="git-commit"></i> Commit</button>
+            <button class="btn btn-sm" id="pgBranch"><i data-oct="git-branch"></i> New branch</button>
+            <label class="select-wrap"><span class="sr-only">Current branch</span><i data-oct="git-branch"></i><select id="pgSwitch" aria-label="Switch branch"></select></label>
+            <button class="btn btn-sm btn-merge" id="pgMerge"><i data-oct="git-merge"></i> Merge into main</button>
+            <button class="btn btn-sm btn-ghost" id="pgReset" aria-label="Reset playground"><i data-oct="sync"></i> Reset</button>
+          </div>
+          <div class="graph-wrap" id="graphWrap" tabindex="0" aria-label="Commit graph"><svg id="graph" role="img" aria-label="Commit history graph"></svg></div>
+          <div class="terminal" aria-label="Commands you would type">
+            <div class="term-bar"><span></span><span></span><span></span><b>terminal</b></div>
+            <pre id="termOut" aria-live="polite"></pre>
+          </div>
+        </div>
+        <aside class="challenge" aria-labelledby="chTitle">
+          <h3 id="chTitle"><i data-oct="goal"></i> Challenge</h3>
+          <p class="muted">Do what a real team does when adding a feature:</p>
+          <ol class="checklist" id="challenge">
+            <li data-step="branch">Create a new branch</li>
+            <li data-step="commits">Make 2 commits on that branch</li>
+            <li data-step="merge">Merge it back into <code>main</code></li>
+          </ol>
+          <div class="win" id="win" hidden><i data-oct="trophy"></i><div><b>Nice work!</b><span>That is exactly the GitHub flow.</span></div></div>
+          <div class="legend">
+            <p><span class="lg-dot" style="--c:var(--muted)"></span> Commit: a save point</p>
+            <p><span class="lg-dot ring"></span> HEAD: where you are now</p>
+            <p><span class="lg-line"></span> Merge: two lines joining</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ===== PR FLOW ===== -->
+    <section class="section" id="flow">
+      <div class="section-head reveal">
+        <span class="kicker">04 · Teamwork</span>
+        <h2>The life of a pull request</h2>
+        <p>This is how changes get into a project safely. Step through it, or press play.</p>
+      </div>
+      <div class="flow reveal">
+        <ol class="steps" id="steps" role="tablist" aria-label="Pull request steps"></ol>
+        <div class="flow-stage">
+          <div class="pr-card" id="prCard" aria-live="polite">
+            <div class="pr-top">
+              <span class="pr-state" id="prState"><i data-oct="git-branch"></i> Draft</span>
+              <h3>Add a search bar <span class="muted">#42</span></h3>
+            </div>
+            <p class="pr-meta"><b>alaa</b> wants to merge <span id="prCommits">0</span> commits into <code>main</code> from <code>search-bar</code></p>
+            <ul class="pr-items">
+              <li class="pr-item" data-at="1"><i data-oct="git-commit"></i> Add search input <code class="sha">a1b2c3d</code></li>
+              <li class="pr-item" data-at="1"><i data-oct="git-commit"></i> Style the search bar <code class="sha">e4f5a6b</code></li>
+              <li class="pr-item review" data-at="3"><span class="av" style="--c:#4493f8">B</span><div><b>bshwan</b> reviewed <span class="t-green">approved</span><p>Looks good! Maybe add placeholder text?</p></div></li>
+              <li class="pr-item check" data-at="4"><span class="spin" aria-hidden="true"></span><i data-oct="check-circle-fill" class="ok-ic"></i> <span class="check-txt">Running tests…</span></li>
+            </ul>
+            <button class="merge-btn" id="mergeBtn" disabled><i data-oct="git-merge"></i> <span>Merge pull request</span></button>
+          </div>
+          <div class="flow-explain">
+            <h3 id="stepTitle"></h3>
+            <p id="stepText"></p>
+            <div class="flow-ctrl">
+              <button class="icon-btn" id="prevStep" aria-label="Previous step"><i data-oct="chevron-left"></i></button>
+              <button class="btn btn-sm" id="playSteps"><i data-oct="play"></i> <span>Play</span></button>
+              <button class="icon-btn" id="nextStep" aria-label="Next step"><i data-oct="chevron-right"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FEATURES ===== -->
+    <section class="section" id="features">
+      <div class="section-head reveal">
+        <span class="kicker">05 · The toolbox</span>
+        <h2>More than code storage</h2>
+        <p>GitHub bundles the tools a team needs into one place. Pick a feature to see it in action.</p>
+      </div>
+      <div class="features reveal">
+        <div class="tabs" role="tablist" aria-label="GitHub features" id="featTabs">
+          <button role="tab" id="tab-issues" aria-controls="panel-issues" aria-selected="true"><i data-oct="issue-opened"></i> Issues &amp; Projects</button>
+          <button role="tab" id="tab-actions" aria-controls="panel-actions" aria-selected="false" tabindex="-1"><i data-oct="play"></i> Actions</button>
+          <button role="tab" id="tab-copilot" aria-controls="panel-copilot" aria-selected="false" tabindex="-1"><i data-oct="copilot"></i> Copilot</button>
+          <button role="tab" id="tab-pages" aria-controls="panel-pages" aria-selected="false" tabindex="-1"><i data-oct="browser"></i> Pages</button>
+          <button role="tab" id="tab-codespaces" aria-controls="panel-codespaces" aria-selected="false" tabindex="-1"><i data-oct="codespaces"></i> Codespaces</button>
+          <button role="tab" id="tab-security" aria-controls="panel-security" aria-selected="false" tabindex="-1"><i data-oct="shield-check"></i> Security</button>
+        </div>
+
+        <div class="panel" role="tabpanel" id="panel-issues" aria-labelledby="tab-issues">
+          <div class="panel-text"><h3>Plan the work</h3><p><b>Issues</b> are to-do items: bugs to fix or ideas to try. <b>Projects</b> arrange them on a board so everyone can see who is doing what.</p><ul class="ticks"><li>Assign tasks to teammates</li><li>Label them: bug, idea, docs</li><li>Track progress from To do to Done</li></ul></div>
+          <div class="mock kanban" id="kanban" aria-hidden="true">
+            <div class="col" data-col="0"><h4><span style="--c:var(--green)"></span>To do</h4></div>
+            <div class="col" data-col="1"><h4><span style="--c:var(--yellow)"></span>In progress</h4></div>
+            <div class="col" data-col="2"><h4><span style="--c:var(--purple)"></span>Done</h4></div>
+          </div>
+        </div>
+
+        <div class="panel" role="tabpanel" id="panel-actions" aria-labelledby="tab-actions" hidden>
+          <div class="panel-text"><h3>Automate the boring parts</h3><p><b>GitHub Actions</b> runs tasks automatically, such as testing your code every time someone pushes a change.</p><ul class="ticks"><li>Catches mistakes in minutes</li><li>Builds and publishes your app</li><li>Free for public projects</li></ul><button class="btn btn-sm btn-primary" id="runWorkflow"><i data-oct="play"></i> Run workflow</button></div>
+          <div class="mock pipeline" aria-live="polite">
+            <div class="pipe-head"><i data-oct="workflow"></i> CI · <span id="runNo">run #127</span></div>
+            <ol id="pipeline"></ol>
+          </div>
+        </div>
+
+        <div class="panel" role="tabpanel" id="panel-copilot" aria-labelledby="tab-copilot" hidden>
+          <div class="panel-text"><h3>An AI pair programmer</h3><p><b>GitHub Copilot</b> suggests code as you type. The grey text is its suggestion: accept it, or keep typing.</p><ul class="ticks"><li>Free for verified students</li><li>Explains code in plain English</li><li>Always check what it writes</li></ul><button class="btn btn-sm btn-primary" id="acceptBtn"><kbd>Tab</kbd> Accept suggestion</button></div>
+          <div class="mock editor" aria-label="Code editor example">
+            <div class="ed-bar"><span></span><span></span><span></span><b>grades.js</b></div>
+            <pre class="code"><span class="ln">1</span><span class="c">// average of a student's grades</span>
+<span class="ln">2</span><span class="k">function</span> <span class="f">average</span>(grades) {
+<span class="ln">3</span><span id="ghost" class="ghost">  return grades.reduce((a, b) =&gt; a + b, 0)
+<span class="ln">4</span>    / grades.length;</span><span id="typed"></span>
+<span class="ln">5</span>}</pre>
+          </div>
+        </div>
+
+        <div class="panel" role="tabpanel" id="panel-pages" aria-labelledby="tab-pages" hidden>
+          <div class="panel-text"><h3>A free website from a repo</h3><p><b>GitHub Pages</b> turns files in a repository into a live website. This very site is hosted with it.</p><ul class="ticks"><li>Free hosting for portfolios and projects</li><li>Updates every time you push</li><li>Address like <code>yourname.github.io</code></li></ul><button class="btn btn-sm btn-primary" id="deployBtn"><i data-oct="rocket"></i> Deploy site</button></div>
+          <div class="mock browser" aria-live="polite">
+            <div class="br-bar"><span></span><span></span><span></span><div class="url"><i data-oct="lock"></i> <span id="urlText">yourname.github.io</span></div></div>
+            <div class="br-body" id="brBody"><div class="br-empty"><i data-oct="browser"></i><p>Press <b>Deploy site</b> to publish</p></div></div>
+          </div>
+        </div>
+
+        <div class="panel" role="tabpanel" id="panel-codespaces" aria-labelledby="tab-codespaces" hidden>
+          <div class="panel-text"><h3>Code from any browser</h3><p><b>Codespaces</b> opens a full code editor in your browser, already set up for the project. Nothing to install.</p><ul class="ticks"><li>Works on any computer, even a library PC</li><li>Same tools as a desktop editor</li><li>Free monthly hours for personal accounts</li></ul></div>
+          <div class="mock editor cs" aria-hidden="true">
+            <div class="ed-bar"><span></span><span></span><span></span><b>index.html — Codespace</b></div>
+            <pre class="code" id="csCode"></pre>
+            <div class="cs-status"><i data-oct="codespaces"></i> Codespace running</div>
+          </div>
+        </div>
+
+        <div class="panel" role="tabpanel" id="panel-security" aria-labelledby="tab-security" hidden>
+          <div class="panel-text"><h3>Stay safe automatically</h3><p><b>Dependabot</b> watches the libraries your project uses. When one has a known security problem, it warns you and even opens a fix.</p><ul class="ticks"><li>Alerts for unsafe libraries</li><li>Automatic update pull requests</li><li>Secret scanning stops leaked passwords</li></ul><button class="btn btn-sm btn-primary" id="fixBtn"><i data-oct="dependabot"></i> Let Dependabot fix it</button></div>
+          <div class="mock alerts" aria-live="polite">
+            <div class="alert" id="alert"><i data-oct="alert" class="al-ic"></i><div><b id="alertTitle">1 vulnerable library found</b><span id="alertText">image-tools 2.1.0 has a known security issue</span></div></div>
+            <div class="fixpr" id="fixPr" hidden><i data-oct="git-pull-request"></i><div><b>Bump image-tools from 2.1.0 to 2.1.4</b><span>opened by dependabot · all checks passed</span></div><span class="tag-merged"><i data-oct="git-merge"></i> merged</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CONTRIBUTION GRAPH ===== -->
+    <section class="section" id="graph-sec">
+      <div class="section-head reveal">
+        <span class="kicker">06 · Your profile</span>
+        <h2>Every commit leaves a mark</h2>
+        <p>Your GitHub profile shows a green square for each day you contribute. Click or drag across the grid to paint your own year.</p>
+      </div>
+      <div class="contrib reveal">
+        <div class="contrib-top">
+          <p><b id="cTotal">0</b> contributions · longest streak <b id="cStreak">0</b> days</p>
+          <div class="contrib-btns">
+            <button class="btn btn-sm" id="cRandom"><i data-oct="sync"></i> Random year</button>
+            <button class="btn btn-sm btn-ghost" id="cClear"><i data-oct="x"></i> Clear</button>
+          </div>
+        </div>
+        <div class="contrib-scroll"><div class="contrib-grid" id="cGrid" role="grid" aria-label="Contribution graph, 52 weeks"></div></div>
+        <div class="contrib-legend">Less <i class="l0"></i><i class="l1"></i><i class="l2"></i><i class="l3"></i><i class="l4"></i> More</div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="foot-brand"><i data-oct="mark-github"></i><div><b>GitHub Explained</b><span>Made by Bshwan Mohammed, Alaa Shvan, Alast Amanj and Barzee Nawroz</span><span>Qaiwan International University</span></div></div>
+    <div class="foot-src"><b>Sources</b>
+      <a href="https://github.blog/news-insights/octoverse/octoverse-a-new-developer-joins-github-every-second-as-ai-leads-typescript-to-1/" target="_blank" rel="noopener">GitHub Octoverse 2025</a>
+      <a href="https://docs.github.com/en/get-started" target="_blank" rel="noopener">GitHub Docs: Get started</a>
+      <a href="https://education.github.com/pack" target="_blank" rel="noopener">GitHub Student Developer Pack</a>
+    </div>
+    <p class="foot-note">An independent student project. GitHub and the Octocat logo are trademarks of GitHub, Inc.</p>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="assets/icons.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
