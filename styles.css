@@ -163,9 +163,9 @@ b, strong { font-weight: 700; }
 /* ---------- flip cards ---------- */
 .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .card { perspective: 1200px; min-height: 230px; }
-.card button { width: 100%; height: 100%; min-height: 230px; position: relative; transform-style: preserve-3d; transition: transform .7s var(--ease); text-align: left; border-radius: var(--radius); }
+.card button { display: grid; width: 100%; height: 100%; min-height: 230px; position: relative; transform-style: preserve-3d; transition: transform .7s var(--ease); text-align: left; border-radius: var(--radius); }
 .card.flipped button { transform: rotateY(180deg); }
-.face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: var(--radius); padding: 26px; display: flex; flex-direction: column; border: 1px solid var(--border); background: var(--surface); }
+.face { grid-area: 1 / 1; position: relative; min-width: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: var(--radius); padding: 26px; display: flex; flex-direction: column; border: 1px solid var(--border); background: var(--surface); }
 .face.front { justify-content: space-between; transition: border-color .3s; }
 .card button:hover .front { border-color: var(--c); }
 .face.back { transform: rotateY(180deg); background: linear-gradient(160deg, color-mix(in srgb, var(--c) 16%, var(--surface)), var(--surface)); border-color: var(--c); gap: 10px; }
