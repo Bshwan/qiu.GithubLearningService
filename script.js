@@ -428,13 +428,6 @@
   $('#runWorkflow').addEventListener('click', runPipeline);
   onShow.actions = () => { if (!running && !$('.summary', pipeEl)) runPipeline(); };
 
-  // Copilot: accept the grey suggestion
-  const ghost = $('#ghost'), acceptBtn = $('#acceptBtn');
-  acceptBtn.addEventListener('click', () => {
-    if (ghost.classList.contains('accepted')) { ghost.classList.remove('accepted'); acceptBtn.innerHTML = '<kbd>Tab</kbd> Accept suggestion'; return; }
-    ghost.classList.add('accepted'); acceptBtn.innerHTML = `${icon('sync')} Try again`; toast('Suggestion accepted. Always read it before you use it!');
-  });
-
   // Pages: deploy a site
   const brBody = $('#brBody'), deployBtn = $('#deployBtn');
   let deploying = false;
@@ -487,6 +480,87 @@
     alertEl.classList.add('fixed'); $('#alertTitle').textContent = 'No vulnerable libraries'; $('#alertText').textContent = 'image-tools updated to 2.1.4';
     alertEl.querySelector('.oct').outerHTML = icon('shield-check', 'al-ic');
     fixBtn.innerHTML = `${icon('sync')} Reset demo`;
+  });
+
+  /* ---------- copilot ---------- */
+  const cpTabs = $$('#cpTabs [role="tab"]');
+  function selectCp(tab, focus) {
+    cpTabs.forEach((t) => {
+      const on = t === tab;
+      t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1;
+      $('#' + t.getAttribute('aria-controls')).hidden = !on;
+    });
+    if (focus) tab.focus();
+  }
+  cpTabs.forEach((t, i) => {
+    t.addEventListener('click', () => selectCp(t));
+    t.addEventListener('keydown', (e) => {
+      const k = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+      if (k) { e.preventDefault(); selectCp(cpTabs[(i + k + cpTabs.length) % cpTabs.length], true); }
+    });
+  });
+
+  // Suggest: accept the grey suggestion
+  const ghost = $('#ghost'), acceptBtn = $('#acceptBtn');
+  acceptBtn.addEventListener('click', () => {
+    if (ghost.classList.contains('accepted')) { ghost.classList.remove('accepted'); acceptBtn.innerHTML = '<kbd>Tab</kbd> Accept suggestion'; return; }
+    ghost.classList.add('accepted'); acceptBtn.innerHTML = `${icon('sync')} Try again`; toast('Suggestion accepted. Always read it before you use it!');
+  });
+
+  // Chat: pick a question, Copilot streams an answer
+  const chatLog = $('#chatLog'), chips = $$('#cpp-chat .chip');
+  const chatSr = document.createElement('p'); chatSr.className = 'sr-only'; chatSr.setAttribute('aria-live', 'polite');
+  chatLog.after(chatSr);
+  const answers = {
+    explain: ['It adds up every grade with <code>reduce</code>, starting from 0, then divides the total by how many grades there are. The result is the average.'],
+    bug: ['If the list is empty, <code>grades.length</code> is 0, so it divides by zero and returns <code>NaN</code>. Check for an empty list first:',
+      '<span class="k">if</span> (grades.length === <span class="s">0</span>) <span class="k">return</span> <span class="s">0</span>;'],
+    test: ['Here is a quick check you can run. It should print nothing if the function works:',
+      '<span class="f">console</span>.assert(<span class="f">average</span>([<span class="s">80</span>, <span class="s">90</span>, <span class="s">100</span>]) === <span class="s">90</span>);'],
+  };
+  const bubble = (who, html) => {
+    const d = document.createElement('div'); d.className = `bubble ${who}`;
+    d.innerHTML = who === 'bot' ? `<span class="who">${icon('copilot')}</span><div class="b-body">${html}</div>` : `<div class="b-body">${html}</div>`;
+    chatLog.appendChild(d); chatLog.scrollTop = chatLog.scrollHeight; return $('.b-body', d);
+  };
+  async function ask(chip) {
+    const [text, code] = answers[chip.dataset.q];
+    chips.forEach((c) => { c.disabled = true; });
+    bubble('me', chip.textContent);
+    await sleep(350);
+    const body = bubble('bot', '<span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>');
+    await sleep(900);
+    const tmp = document.createElement('div'); tmp.innerHTML = text;
+    const words = tmp.textContent.split(' ');
+    for (let k = 1; k <= words.length && !reduceMotion; k++) { body.textContent = words.slice(0, k).join(' '); chatLog.scrollTop = chatLog.scrollHeight; await sleep(38); }
+    body.innerHTML = text + (code ? `<pre class="code">${code}</pre>` : '');
+    chatLog.scrollTop = chatLog.scrollHeight;
+    chatSr.textContent = 'Copilot: ' + body.textContent;
+    chips.forEach((c) => { c.disabled = false; });
+  }
+  chips.forEach((c) => c.addEventListener('click', () => ask(c)));
+
+  // Agent: assign an issue, watch it work, get a pull request
+  const agentSteps = [['Reading the repository', '8s'], ['Planning a fix', '12s'], ['Editing grades.js', '21s'], ['Running tests', '34s']];
+  const agentEl = $('#agentSteps'), assignBtn = $('#assignBtn'), agentPr = $('#agentPr'), assignee = $('#assignee');
+  let agentBusy = false;
+  assignBtn.addEventListener('click', async () => {
+    if (agentBusy) return;
+    if (!agentPr.hidden) {
+      agentPr.hidden = true; assignee.hidden = true; agentEl.innerHTML = '';
+      assignBtn.innerHTML = `${icon('copilot')} Assign to Copilot`; return;
+    }
+    agentBusy = true; assignBtn.disabled = true; assignee.hidden = false;
+    agentEl.innerHTML = agentSteps.map(([n]) => `<li><span class="st"></span>${n}<span class="t"></span></li>`).join('');
+    const lis = $$('li', agentEl);
+    for (let k = 0; k < lis.length; k++) {
+      lis[k].classList.add('running'); await sleep(750);
+      lis[k].classList.replace('running', 'ok'); $('.t', lis[k]).textContent = agentSteps[k][1];
+    }
+    agentPr.hidden = false;
+    assignBtn.disabled = false; agentBusy = false;
+    assignBtn.innerHTML = `${icon('sync')} Reset demo`;
+    toast('Copilot opened a pull request. A person still reviews it before merging.');
   });
 
   /* ---------- contribution graph ---------- */

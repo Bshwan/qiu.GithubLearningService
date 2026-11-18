@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Mona+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=2">
+  <link rel="stylesheet" href="styles.css?v=4">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -27,6 +27,7 @@
         <li><a href="#playground">Playground</a></li>
         <li><a href="#flow">Pull requests</a></li>
         <li><a href="#features">Features</a></li>
+        <li><a href="#copilot">Copilot</a></li>
       </ul>
     </nav>
   </header>
@@ -216,7 +217,6 @@
         <div class="tabs" role="tablist" aria-label="GitHub features" id="featTabs">
           <button role="tab" id="tab-issues" aria-controls="panel-issues" aria-selected="true"><i data-oct="issue-opened"></i> Issues &amp; Projects</button>
           <button role="tab" id="tab-actions" aria-controls="panel-actions" aria-selected="false" tabindex="-1"><i data-oct="play"></i> Actions</button>
-          <button role="tab" id="tab-copilot" aria-controls="panel-copilot" aria-selected="false" tabindex="-1"><i data-oct="copilot"></i> Copilot</button>
           <button role="tab" id="tab-pages" aria-controls="panel-pages" aria-selected="false" tabindex="-1"><i data-oct="browser"></i> Pages</button>
           <button role="tab" id="tab-codespaces" aria-controls="panel-codespaces" aria-selected="false" tabindex="-1"><i data-oct="codespaces"></i> Codespaces</button>
           <button role="tab" id="tab-security" aria-controls="panel-security" aria-selected="false" tabindex="-1"><i data-oct="shield-check"></i> Security</button>
@@ -235,19 +235,7 @@
           <div class="panel-text"><h3>Automate the boring parts</h3><p><b>GitHub Actions</b> runs tasks automatically, such as testing your code every time someone pushes a change.</p><ul class="ticks"><li>Catches mistakes in minutes</li><li>Builds and publishes your app</li><li>Free for public projects</li></ul><button class="btn btn-sm btn-primary" id="runWorkflow"><i data-oct="play"></i> Run workflow</button></div>
           <div class="mock pipeline" aria-live="polite">
             <div class="pipe-head"><i data-oct="workflow"></i> CI · <span id="runNo">run #127</span></div>
-            <ol id="pipeline"></ol>
-          </div>
-        </div>
-
-        <div class="panel" role="tabpanel" id="panel-copilot" aria-labelledby="tab-copilot" hidden>
-          <div class="panel-text"><h3>An AI pair programmer</h3><p><b>GitHub Copilot</b> suggests code as you type. The grey text is its suggestion: accept it, or keep typing.</p><ul class="ticks"><li>Free for verified students</li><li>Explains code in plain English</li><li>Always check what it writes</li></ul><button class="btn btn-sm btn-primary" id="acceptBtn"><kbd>Tab</kbd> Accept suggestion</button></div>
-          <div class="mock editor" aria-label="Code editor example">
-            <div class="ed-bar"><span></span><span></span><span></span><b>grades.js</b></div>
-            <pre class="code"><span class="ln">1</span><span class="c">// average of a student's grades</span>
-<span class="ln">2</span><span class="k">function</span> <span class="f">average</span>(grades) {
-<span class="ln">3</span><span id="ghost" class="ghost">  return grades.reduce((a, b) =&gt; a + b, 0)
-<span class="ln">4</span>    / grades.length;</span><span id="typed"></span>
-<span class="ln">5</span>}</pre>
+            <ol id="pipeline" class="runlist"></ol>
           </div>
         </div>
 
@@ -278,10 +266,75 @@
       </div>
     </section>
 
+    <!-- ===== COPILOT ===== -->
+    <section class="section" id="copilot">
+      <div class="section-head reveal">
+        <span class="kicker">06 · AI helper</span>
+        <h2>Meet GitHub <span class="grad grad-ai">Copilot</span></h2>
+        <p>Copilot is an AI assistant built into GitHub and your code editor. It can finish your code, answer questions about it, and even work on a task by itself.</p>
+      </div>
+
+      <div class="cp reveal">
+        <div class="cp-modes" role="tablist" aria-label="Ways to use Copilot" id="cpTabs">
+          <button role="tab" id="cpt-suggest" aria-controls="cpp-suggest" aria-selected="true"><span class="cp-ic"><i data-oct="code"></i></span><span><b>Suggest</b><small>Finishes code as you type</small></span></button>
+          <button role="tab" id="cpt-chat" aria-controls="cpp-chat" aria-selected="false" tabindex="-1"><span class="cp-ic"><i data-oct="comment-discussion"></i></span><span><b>Chat</b><small>Answers questions about your code</small></span></button>
+          <button role="tab" id="cpt-agent" aria-controls="cpp-agent" aria-selected="false" tabindex="-1"><span class="cp-ic"><i data-oct="copilot"></i></span><span><b>Agent</b><small>Works on a task and opens a pull request</small></span></button>
+        </div>
+
+        <div class="cp-stage">
+          <div class="cp-panel" role="tabpanel" id="cpp-suggest" aria-labelledby="cpt-suggest">
+            <div class="cp-cap"><p>Write a comment saying what you want. Copilot guesses the code and shows it in <span class="ghost-eg">grey</span>. Accept it, or keep typing.</p><button class="btn btn-sm btn-primary" id="acceptBtn"><kbd>Tab</kbd> Accept suggestion</button></div>
+            <div class="mock editor" aria-label="Code editor example">
+              <div class="ed-bar"><span></span><span></span><span></span><b>grades.js</b></div>
+              <pre class="code"><span class="ln">1</span><span class="c">// average of a student's grades</span>
+<span class="ln">2</span><span class="k">function</span> <span class="f">average</span>(grades) {
+<span class="ln">3</span><span id="ghost" class="ghost">  return grades.reduce((a, b) =&gt; a + b, 0)
+<span class="ln">4</span>    / grades.length;</span>
+<span class="ln">5</span>}</pre>
+            </div>
+          </div>
+
+          <div class="cp-panel" role="tabpanel" id="cpp-chat" aria-labelledby="cpt-chat" hidden>
+            <div class="cp-cap"><p>Ask a question in plain English. Copilot reads the open file and answers. Pick a question:</p></div>
+            <div class="mock chat">
+              <div class="ed-bar"><span></span><span></span><span></span><b>Copilot Chat</b><span class="ctx-chip"><i data-oct="file-code"></i> grades.js</span></div>
+              <div class="chat-log" id="chatLog">
+                <div class="bubble bot"><span class="who"><i data-oct="copilot"></i></span><div class="b-body">Hi! I can see <code>grades.js</code>. What would you like to know?</div></div>
+              </div>
+              <div class="chat-prompts" role="group" aria-label="Questions to ask Copilot">
+                <button class="chip" data-q="explain">Explain this code</button>
+                <button class="chip" data-q="bug">Find a bug</button>
+                <button class="chip" data-q="test">Write a test</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="cp-panel" role="tabpanel" id="cpp-agent" aria-labelledby="cpt-agent" hidden>
+            <div class="cp-cap"><p>Assign an issue to Copilot. It works in the background, then opens a pull request for a person to review.</p><button class="btn btn-sm btn-merge" id="assignBtn"><i data-oct="copilot"></i> Assign to Copilot</button></div>
+            <div class="mock agent" aria-live="polite">
+              <div class="issue-card"><i data-oct="issue-opened"></i><div><b>Average shows NaN when there are no grades <span class="muted">#57</span></b><span>opened by alast · <span class="lbl bug">bug</span></span></div><span class="assignee" id="assignee" hidden><i data-oct="copilot"></i></span></div>
+              <ol class="runlist" id="agentSteps"></ol>
+              <div class="fixpr agent-pr" id="agentPr" hidden><i data-oct="git-pull-request"></i><div><b>Handle an empty grades list</b><span>#58 · draft pull request by Copilot · waiting for your review</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="cp-more-title reveal">More ways Copilot helps</h3>
+      <div class="cp-more">
+        <article class="cp-feat reveal" style="--c:var(--purple)"><span class="cf-ic"><i data-oct="code-review"></i></span><h4>Code review</h4><p>Reviews a pull request and leaves comments, like an extra teammate.</p></article>
+        <article class="cp-feat reveal" style="--c:var(--green)"><span class="cf-ic"><i data-oct="git-pull-request"></i></span><h4>Pull request summaries</h4><p>Writes a clear description of what your changes do.</p></article>
+        <article class="cp-feat reveal" style="--c:var(--blue)"><span class="cf-ic"><i data-oct="git-commit"></i></span><h4>Commit messages</h4><p>Suggests a short message describing each change you save.</p></article>
+        <article class="cp-feat reveal" style="--c:var(--orange)"><span class="cf-ic"><i data-oct="terminal"></i></span><h4>Terminal help</h4><p>Explains commands and suggests the right one for what you want to do.</p></article>
+        <article class="cp-feat reveal" style="--c:var(--red)"><span class="cf-ic"><i data-oct="shield-check"></i></span><h4>Security fixes</h4><p>Proposes fixes when GitHub finds a security problem in your code.</p></article>
+        <article class="cp-feat reveal" style="--c:var(--pink)"><span class="cf-ic"><i data-oct="beaker"></i></span><h4>Tests and explanations</h4><p>Writes tests for your code and explains parts you don't understand.</p></article>
+      </div>
+    </section>
+
     <!-- ===== CONTRIBUTION GRAPH ===== -->
     <section class="section" id="graph-sec">
       <div class="section-head reveal">
-        <span class="kicker">06 · Your profile</span>
+        <span class="kicker">07 · Your profile</span>
         <h2>Every commit leaves a mark</h2>
         <p>Your GitHub profile shows a green square for each day you contribute. Click or drag across the grid to paint your own year.</p>
       </div>
@@ -306,13 +359,14 @@
       <a href="https://github.blog/news-insights/octoverse/octoverse-a-new-developer-joins-github-every-second-as-ai-leads-typescript-to-1/" target="_blank" rel="noopener">GitHub Octoverse 2025</a>
       <a href="https://docs.github.com/en/get-started" target="_blank" rel="noopener">GitHub Docs: Get started</a>
       <a href="https://education.github.com/pack" target="_blank" rel="noopener">GitHub Student Developer Pack</a>
+      <a href="https://docs.github.com/en/copilot" target="_blank" rel="noopener">GitHub Docs: Copilot</a>
     </div>
     <p class="foot-note">An independent student project. GitHub and the Octocat logo are trademarks of GitHub, Inc.</p>
   </footer>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="assets/icons.js?v=2"></script>
-  <script src="script.js?v=2"></script>
+  <script src="assets/icons.js?v=3"></script>
+  <script src="script.js?v=4"></script>
 </body>
 </html>
